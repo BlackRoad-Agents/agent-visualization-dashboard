@@ -1,6 +1,6 @@
-import { handleClerkWebhook } from '@/lib/clerk-stripe-integration';
+const { handleClerkWebhook } = require('../../../lib/clerk-stripe-integration');
 
-export const config = { api: { bodyParser: false } };
+const config = { api: { bodyParser: false } };
 
 async function getRawBody(req) {
   const chunks = [];
@@ -8,8 +8,10 @@ async function getRawBody(req) {
   return Buffer.concat(chunks).toString('utf8');
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
   try {
     const payload = await getRawBody(req);
     const headers = {
@@ -20,6 +22,10 @@ export default async function handler(req, res) {
     await handleClerkWebhook(payload, headers);
     res.status(200).json({ success: true });
   } catch (error) {
+    console.error('Clerk webhook error:', error.message);
     res.status(400).json({ error: error.message });
   }
 }
+
+module.exports = handler;
+module.exports.config = config;

@@ -1,3 +1,32 @@
 name = "agent-visualization-dashboard"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-12-01"
+main = "worker.js"
+
+# Cloudflare Pages static site output
 pages_build_output_dir = "."
+
+# Worker routes (when deployed as a Worker instead of Pages)
+# route = { pattern = "agent-visualization.blackroad.systems/*", zone_name = "blackroad.systems" }
+
+# Scheduled tasks for long-running operations
+[triggers]
+crons = ["0 */6 * * *"]
+
+# KV namespace for persisting agent metrics (create via: wrangler kv namespace create AGENT_METRICS)
+# [[kv_namespaces]]
+# binding = "AGENT_METRICS"
+# id = "<your-kv-namespace-id>"
+
+# Environment variables (non-secret; secrets set via: wrangler secret put <NAME>)
+[vars]
+ENVIRONMENT = "production"
+SERVICE_NAME = "agent-visualization-worker"
+
+# Production environment overrides
+[env.production]
+name = "agent-visualization-dashboard"
+compatibility_date = "2024-12-01"
+main = "worker.js"
+
+[env.production.vars]
+ENVIRONMENT = "production"

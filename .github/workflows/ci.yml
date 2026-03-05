@@ -2,31 +2,62 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    name: Build & Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4.0.0
+        with:
+          node-version: '18'
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci || npm install
-      continue-on-error: true
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run tests
-      run: npm test || echo "No tests configured"
-      continue-on-error: true
+      - name: Syntax check
+        run: node --check lib/clerk-stripe-integration.js
 
-    - name: Build
-      run: npm run build || echo "No build script"
-      continue-on-error: true
+      - name: Run tests
+        run: npm test
+
+      - name: Validate HTML
+        run: |
+          if [ -f "index.html" ]; then
+            echo "Validating index.html exists and is non-empty..."
+            test -s index.html && echo "index.html OK"
+          fi
+
+      - name: Brand compliance check
+        run: |
+          echo "Checking BlackRoad brand compliance..."
+          if grep -r "#FF9D00\|#FF6B00\|#FF0066\|#FF006B\|#D600AA\|#7700FF\|#0066FF" . \
+             --include="*.html" --include="*.css" --include="*.js" --include="*.jsx" --include="*.tsx" 2>/dev/null; then
+            echo "FORBIDDEN COLORS FOUND! Must use official BlackRoad colors only."
+            exit 1
+          fi
+          echo "Brand compliance check passed"
+
+      - name: Verify static assets
+        run: |
+          echo "Checking required files..."
+          test -f index.html && echo "  index.html OK"
+          test -f wrangler.toml && echo "  wrangler.toml OK"
+          test -f LICENSE && echo "  LICENSE OK"
+          test -f lib/clerk-stripe-integration.js && echo "  lib/clerk-stripe-integration.js OK"
+          test -f pages/api/webhooks/clerk.js && echo "  pages/api/webhooks/clerk.js OK"
+          test -f pages/api/webhooks/stripe.js && echo "  pages/api/webhooks/stripe.js OK"
+          echo "All required files present"

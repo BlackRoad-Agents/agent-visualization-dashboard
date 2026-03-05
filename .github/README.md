@@ -1,33 +1,51 @@
 # GitHub Integration
 
-This repository is integrated with GitHub automation:
-
-## Features
-
-- ✅ **CI/CD Pipeline** - Automatic testing and building
-- ✅ **Auto-merge** - Dependabot PRs auto-merge when passing
-- ✅ **Issue Templates** - Standardized bug reports and feature requests
-- ✅ **PR Templates** - Consistent pull request format
-- ✅ **Dependabot** - Automatic dependency updates
+This repository is integrated with GitHub automation for BlackRoad OS, Inc.
 
 ## Workflows
 
-### CI Workflow (`.github/workflows/ci.yml`)
-- Runs on every push and PR
-- Tests, builds, and validates code
+All actions are pinned to specific commit hashes for supply-chain security.
+
+### CI Workflow (`ci.yml`)
+- Runs on every push and PR to main/master
+- Installs dependencies, runs syntax checks, tests
+- Brand compliance validation (forbidden color check)
+- Verifies all required static assets are present
 - Node.js 18 environment
 
-### Auto-merge Workflow (`.github/workflows/auto-merge.yml`)
-- Auto-merges PRs with `automerge` label
-- Auto-merges Dependabot PRs when CI passes
-- Uses squash merge strategy
+### Deploy Workflow (`deploy.yml`)
+- Deploys to Cloudflare Pages on push to main/master
+- Brand compliance check before deploy
+- Uses `cloudflare/wrangler-action` (pinned hash)
+- Requires secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+
+### Auto-Merge Workflow (`auto-merge.yml`)
+- Auto-merges Dependabot PRs (approve + squash merge)
+- Auto-merges bot PRs and PRs labeled `automerge`
+- Validates mergeability before merging
+- Squash merge with branch cleanup
+
+### CodeQL Security Analysis (`blackroad-codeql-analysis.yml`)
+- Runs on push, PR, and weekly schedule (Monday 4 AM UTC)
+- JavaScript/TypeScript analysis
+- Security + quality queries
+- Auto-creates issues on failure
+
+## Dependabot
+
+- **npm**: Weekly dependency updates (Monday)
+- **github-actions**: Weekly action updates (Monday)
+- Auto-labeled with `dependencies` + `automerge`
 
 ## Labels
 
-- `bug` - Bug reports
-- `enhancement` - Feature requests
-- `dependencies` - Dependency updates
-- `automerge` - PRs to auto-merge
+- `bug` — Bug reports
+- `enhancement` — Feature requests
+- `dependencies` — Dependency updates
+- `automerge` — PRs to auto-merge
+- `security` — Security issues
+- `codeql` — CodeQL findings
 
 ---
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+© 2024-2026 BlackRoad OS, Inc. All Rights Reserved.

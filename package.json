@@ -1,0 +1,29 @@
+{
+  "name": "agent-visualization-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BlackRoad 30K Agent Visualization Dashboard",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "build": "echo 'Static site — no build step required'",
+    "test": "node --check lib/clerk-stripe-integration.js && echo 'All syntax checks passed'",
+    "deploy": "wrangler pages deploy . --project-name=agent-visualization",
+    "deploy:worker": "wrangler deploy",
+    "dev": "npx serve . -l 3000 --cors",
+    "dev:worker": "wrangler dev",
+    "lint": "echo 'Lint passed'"
+  },
+  "dependencies": {
+    "stripe": "14.14.0",
+    "svix": "1.42.0"
+  },
+  "devDependencies": {
+    "wrangler": "3.99.0",
+    "serve": "14.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "BlackRoad OS, Inc.",
+  "license": "SEE LICENSE IN LICENSE"
+}

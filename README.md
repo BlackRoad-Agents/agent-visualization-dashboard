@@ -1,40 +1,32 @@
-# 🌌 BlackRoad 30K Agent Visualization Dashboard
+# BlackRoad 30K Agent Visualization Dashboard
 
 **Real-time visualization of 30,000 AI agents deployment**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-green.svg)](https://agent-visualization.pages.dev)
-[![Status](https://img.shields.io/badge/status-production-green.svg)](https://github.com/BlackRoad-OS/agent-visualization-dashboard)
+**Copyright © 2024-2026 BlackRoad OS, Inc. All Rights Reserved.**
+**CEO:** Alexa Amundson | **PROPRIETARY AND CONFIDENTIAL**
+
+[![CI](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/ci.yml)
+[![Deploy](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/deploy.yml/badge.svg)](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/deploy.yml)
+[![CodeQL](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/blackroad-codeql-analysis.yml/badge.svg)](https://github.com/BlackRoad-OS/agent-visualization-dashboard/actions/workflows/blackroad-codeql-analysis.yml)
 
 ---
 
-## 🎯 Overview
+## Overview
 
 Visual representation of the BlackRoad 30,000 agent deployment system. Watch in real-time as agents are deployed, track their status, and monitor the entire ecosystem.
 
 **Features**:
-- ⚡ Real-time particle-based visualization (30,000 agents)
-- 📊 Live statistics: total agents, active, working, error rates
-- 🎨 7 agent types with color-coded visualization
-- 🚀 Progressive deployment simulation (100 → 1K → 10K → 30K)
-- 🌟 Beautiful BlackRoad design system (golden ratio, gradient colors)
+- Real-time particle-based visualization (30,000 agents)
+- Live statistics: total agents, active, working, error rates
+- 7 agent types with color-coded visualization
+- Progressive deployment simulation (100 → 1K → 10K → 30K)
+- Cloudflare Worker API for long-running tasks and metrics
+- Clerk + Stripe integration for auth and billing
+- BlackRoad design system (golden ratio, gradient colors)
 
 ---
 
-## 🎨 Agent Types
-
-| Type | Count | Color | Purpose |
-|------|-------|-------|---------|
-| Quantum Physics | 1,000 | <span style="color:#00ff88">●</span> #00ff88 | Scientific calculations |
-| Development | 5,000 | <span style="color:#00aaff">●</span> #00aaff | Code review, CI/CD |
-| Research | 5,000 | <span style="color:#ff00ff">●</span> #ff00ff | Literature analysis |
-| Documentation | 5,000 | <span style="color:#ffaa00">●</span> #ffaa00 | API docs, tutorials |
-| Monitoring | 5,000 | <span style="color:#ff3366">●</span> #ff3366 | Infrastructure watch |
-| Integration | 5,000 | <span style="color:#aa00ff">●</span> #aa00ff | API connectors |
-| Analytics | 4,000 | <span style="color:#ffffff">●</span> #ffffff | Metrics, predictions |
-
----
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Local Development
 
@@ -43,7 +35,14 @@ Visual representation of the BlackRoad 30,000 agent deployment system. Watch in 
 git clone https://github.com/BlackRoad-OS/agent-visualization-dashboard.git
 cd agent-visualization-dashboard
 
-# Open in browser
+# Install dependencies
+npm install
+
+# Start local server
+npm start
+# Opens at http://localhost:3000
+
+# Open visualization directly
 open index.html
 ```
 
@@ -56,42 +55,115 @@ npm install -g wrangler
 # Login to Cloudflare
 wrangler login
 
-# Deploy
+# Deploy static site
 wrangler pages deploy . --project-name=agent-visualization
 ```
 
----
+### Deploy Cloudflare Worker (API + scheduled tasks)
 
-## 📊 Visualization Details
+```bash
+# Deploy worker
+wrangler deploy
 
-### Particle System
-- Each particle represents one agent
-- Particles move with realistic physics
-- Working agents glow (shadow effect)
-- Agents connect when close together (visual effect)
-
-### Progressive Deployment
+# Test worker locally
+wrangler dev
 ```
-Phase 1:  100 agents   → 2 seconds
-Phase 2:  1,000 agents → 5 seconds
-Phase 3:  10,000 agents → 10 seconds
-Phase 4:  30,000 agents → 15 seconds
-```
-
-### Statistics Tracked
-- **Total Agents**: Count from 0 to 30,000
-- **Active (Idle)**: Agents waiting for tasks
-- **Working**: Agents processing tasks
-- **Error**: Agents in error state (~2%)
-- **Tasks/Second**: Throughput rate (~8% of total agents)
-- **Progress**: 0% to 100% deployment
 
 ---
 
-## 🎨 Design System
+## Architecture
+
+```
+agent-visualization-dashboard/
+├── index.html                          # Main visualization (30K agent canvas)
+├── worker.js                           # Cloudflare Worker (API + cron jobs)
+├── wrangler.toml                       # Cloudflare configuration
+├── package.json                        # Dependencies (pinned versions)
+├── lib/
+│   └── clerk-stripe-integration.js     # Clerk auth + Stripe billing
+├── pages/
+│   └── api/webhooks/
+│       ├── clerk.js                    # Clerk webhook handler
+│       └── stripe.js                   # Stripe webhook handler
+├── .github/
+│   ├── workflows/
+│   │   ├── ci.yml                      # CI: build, test, brand compliance
+│   │   ├── deploy.yml                  # Deploy to Cloudflare Pages
+│   │   ├── auto-merge.yml             # Auto-merge Dependabot + bot PRs
+│   │   └── blackroad-codeql-analysis.yml  # CodeQL security scanning
+│   ├── dependabot.yml                  # npm + github-actions updates
+│   ├── CODEOWNERS                      # Review requirements
+│   ├── SECURITY.md                     # Vulnerability reporting
+│   └── ISSUE_TEMPLATE/                 # Bug + feature templates
+├── LICENSE                             # BlackRoad OS, Inc. Proprietary
+├── CONTRIBUTING.md                     # Contribution guidelines
+├── CLERK_STRIPE_SETUP_GUIDE.md         # Clerk + Stripe integration guide
+├── BLACKROAD_EMOJI_DICTIONARY.md       # Brand emoji dictionary
+└── TRAFFIC_LIGHT_SYSTEM.md             # Status system guide
+```
+
+---
+
+## Agent Types
+
+| Type | Count | Color | Purpose |
+|------|-------|-------|---------|
+| Quantum Physics | 1,000 | #00ff88 | Scientific calculations |
+| Development | 5,000 | #00aaff | Code review, CI/CD |
+| Research | 5,000 | #ff00ff | Literature analysis |
+| Documentation | 5,000 | #ffaa00 | API docs, tutorials |
+| Monitoring | 5,000 | #ff3366 | Infrastructure watch |
+| Integration | 5,000 | #aa00ff | API connectors |
+| Analytics | 4,000 | #ffffff | Metrics, predictions |
+
+---
+
+## Cloudflare Worker API
+
+The worker (`worker.js`) provides:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check |
+| `/api/metrics` | GET | Full agent fleet metrics |
+| `/api/agents` | GET | Agent type breakdown |
+
+**Scheduled tasks** run every 6 hours (`0 */6 * * *`) to aggregate and persist metrics.
+
+---
+
+## Workflows
+
+All GitHub Actions are pinned to specific commit hashes for reproducibility:
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `ci.yml` | Push/PR to main/master | Build, test, brand compliance, asset verification |
+| `deploy.yml` | Push to main/master | Deploy to Cloudflare Pages |
+| `auto-merge.yml` | PR events | Auto-merge Dependabot and labeled PRs |
+| `blackroad-codeql-analysis.yml` | Push/PR/Weekly | CodeQL security scanning |
+
+**Dependabot** monitors both npm packages and GitHub Actions for updates weekly.
+
+---
+
+## Stripe Products & Billing
+
+Integrated via Clerk + Stripe webhooks. See [CLERK_STRIPE_SETUP_GUIDE.md](CLERK_STRIPE_SETUP_GUIDE.md) for setup.
+
+**Required secrets** (set in GitHub repo settings or Cloudflare):
+- `CLERK_WEBHOOK_SECRET` — Clerk webhook signing secret
+- `STRIPE_SECRET_KEY` — Stripe API secret key
+- `STRIPE_WEBHOOK_SECRET` — Stripe webhook signing secret
+- `CLOUDFLARE_API_TOKEN` — Cloudflare API token
+- `CLOUDFLARE_ACCOUNT_ID` — Cloudflare account ID
+
+---
+
+## Design System
 
 ### Golden Ratio Spacing
-- Base: φ = 1.618
+- Base: phi = 1.618
 - Spacing: 8px, 13px, 21px, 34px, 55px
 
 ### Gradient Colors
@@ -111,27 +183,7 @@ background: linear-gradient(135deg,
 
 ---
 
-## 🏗️ Architecture
-
-```
-index.html
-├── Header (gradient banner)
-├── Stats Grid (6 stat boxes)
-│   ├── Total Agents
-│   ├── Active (Idle)
-│   ├── Working
-│   ├── Error
-│   ├── Tasks/Second
-│   └── Progress Bar
-├── Canvas Container
-│   ├── Agent Particles (30,000)
-│   └── Legend (7 agent types)
-└── Animation Loop (60 FPS)
-```
-
----
-
-## 🔧 Configuration
+## Configuration
 
 Edit configuration in `index.html` script section:
 
@@ -140,69 +192,30 @@ const TARGET_AGENTS = 30000;
 const AGENT_TYPES = [
     { name: 'Quantum Physics', count: 1000, color: '#00ff88' },
     { name: 'Development', count: 5000, color: '#00aaff' },
-    // ...
+    { name: 'Research', count: 5000, color: '#ff00ff' },
+    { name: 'Documentation', count: 5000, color: '#ffaa00' },
+    { name: 'Monitoring', count: 5000, color: '#ff3366' },
+    { name: 'Integration', count: 5000, color: '#aa00ff' },
+    { name: 'Analytics', count: 4000, color: '#ffffff' }
 ];
 ```
 
 ---
 
-## 🌐 Live Demo
+## Enterprise Scale
 
-Visit: [https://agent-visualization.pages.dev](https://agent-visualization.pages.dev)
-
----
-
-## 📖 Related Projects
-
-- **30K Agent Deployment**: [blackroad-30k-agents](https://github.com/BlackRoad-OS/blackroad-30k-agents)
-- **Monitoring Dashboard**: [blackroad-monitoring-dashboard](https://github.com/BlackRoad-OS/blackroad-monitoring-dashboard)
-- **Quantum Physics Agents**: [quantum-physics-agents](https://github.com/BlackRoad-OS/quantum-physics-agents)
-
----
-
-## 🤝 Contributing
-
-This visualization supports the BlackRoad 30k agent deployment. For issues or improvements, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
----
-
-## 📜 License
-
-MIT License - see [LICENSE](LICENSE) for details
-
----
-
-## 🌟 Acknowledgments
-
-Built to support Apollo's phase-3-30k-FINAL deployment milestone.
-
-- **Design**: BlackRoad golden ratio system
-- **Framework**: Vanilla JavaScript + Canvas API
-- **Deploy**: Cloudflare Pages
-- **Purpose**: Visualize the future of AI agent orchestration
-
----
-
-**Built with ❤️ by BlackRoad**
-**Scale**: 0 to 30,000 agents
-**Status**: Production-Ready ✅
-**Purpose**: Real-time agent visualization
-
----
-
-## 📜 License & Copyright
-
-**Copyright © 2026 BlackRoad OS, Inc. All Rights Reserved.**
-
-**CEO:** Alexa Amundson | **PROPRIETARY AND CONFIDENTIAL**
-
-This software is NOT for commercial resale. Testing purposes only.
-
-### 🏢 Enterprise Scale:
 - 30,000 AI Agents
 - 30,000 Human Employees
 - CEO: Alexa Amundson
 
 **Contact:** blackroad.systems@gmail.com
+
+---
+
+## License & Copyright
+
+**Copyright © 2024-2026 BlackRoad OS, Inc. All Rights Reserved.**
+
+This software is proprietary and confidential. NOT open source. NOT for commercial resale.
 
 See [LICENSE](LICENSE) for complete terms.
